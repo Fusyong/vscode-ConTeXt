@@ -1,0 +1,39 @@
+{
+    "comments": {
+        // symbol used for single line comment. Remove this entry if your language does not support line comments
+        "lineComment": "%",
+        // symbols used for start and end a block comment. Remove this entry if your language does not support block comments
+        // "blockComment": [ "/*", "*/" ]
+    },
+    // symbols used as brackets
+    "brackets": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""],
+        ["'", "'"],
+        // ["\\start[a-zA-Z]+", "\\stop[a-zA-Z]+"],
+    ],
+    // symbols that that can be used to surround a selection
+    "surroundingPairs": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"],
+        ["\"", "\""],
+        ["'", "'"],
+        // ["\\start[a-zA-Z]+", "\\stop[a-zA-Z]+"],
+    ],
+    // 似乎被语法文件覆盖了，旧的语法文件没有这个问题
+    "folding": {
+        "markers": {
+            "start": "\\start[a-zA-Z]+",
+            "end": "\\stop[a-zA-Z]+"
+        }
+    },
+}

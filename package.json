@@ -1,0 +1,74 @@
+{
+  "name": "context-grammar",
+  "displayName": "ConTeXt Syntax",
+  "description": "Syntax highlights and outline view for ConTeXt files.",
+  "version": "0.0.1",
+  "publisher": "Fusyong",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fusyong/ConTeXt-grammar.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters"
+  ],
+  "activationEvents": [
+    "onLanguage:context-grammar"
+  ],
+  "icon": "images/icon.png",
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "ConTeXt",
+        "aliases": [
+          "ConTeXt",
+          "context"
+        ],
+        "extensions": [
+          ".lmtx",
+          ".mkiv",
+          ".tex"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ConTeXt",
+        "scopeName": "text.tex.context",
+        "path": "./syntaxes/context.tmLanguage"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3"
+  },
+  "bugs": {
+    "url": "https://github.com/svaberg/SWMF-grammar/issues"
+  },
+  "homepage": "https://github.com/svaberg/SWMF-grammar#readme",
+  "author": "Dag Evensberget"
+}
