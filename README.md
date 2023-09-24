@@ -1,34 +1,54 @@
-模板 https://github.com/svaberg/SWMF-grammar/tree/master
-参考 https://github.com/JulianGmp/vscode-context-syntax
+based on https://github.com/svaberg/SWMF-grammar/tree/master
+and https://github.com/JulianGmp/vscode-context-syntax
+
 资料 https://github.com/pgundlach/context.tmbundle/tree/master
 
-# SWMF Configuration
 
-[![Build Status](https://travis-ci.com/svaberg/SWMF-grammar.svg?branch=master)](https://travis-ci.com/svaberg/SWMF-grammar)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/svaberg/SWMF-grammar)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+## Build the extension
 
-> This is a Visual Studio Code extension and should be installed from the [VS Code extensions marketplace](https://marketplace.visualstudio.com/items?itemName=svaberg.swmf-grammar)
+1. Clone the repository and enter into the folder
 
-This extension provides syntax highlighting, outline view, breadcrumbs, and some code completion for [Space Weather Modelling Framework (SWMF)](http://csem.engin.umich.edu/tools/swmf/) configuration files, such as the BATSRUS `PARAM.in` file. The rules are based on the [SWMF manual](http://csem.engin.umich.edu/tools/swmf/documentation/SWMF.pdf) section 3.2.2.
+2. Install the required packages with `npm`
 
-Automatically highlights files ending in `.in` and `.IN`. For files lacking these extensions, the language can be set manually via normal VS Code mechanisms.
+    ```bash
+    npm install
+    ```
 
-![Features demo](images/demo.png)
+3. Compile with `npm`
 
-## Features
+    ```bash
+    npm run compile
+    ```
 
-* Syntax highlighting;
-* Hierarchical document tree in the [outline view](https://code.visualstudio.com/docs/getstarted/userinterface#_outline-view);
-* [Breadcrumbs](https://code.visualstudio.com/updates/v1_26#_breadcrumbs) support;
-* Toggle comment using `!` as comment character;
-* Code folding between `#BEGIN_COMP` and `#END_COMP` markers;
-* Autoclosing of `#BEGIN_COMP`.
+At this point the extension may be debugged in the Extension Development Host:
 
-## Installation
+```bash
+code .
+```
 
-This is a [Visual Studio Code](https://code.visualstudio.com/download) extension. It is best installed from the [on-line extensions marketplace](https://marketplace.visualstudio.com/items?itemName=svaberg.swmf-grammar), or from inside VS Code: Click on `Preferences/Extensions` and type `swmf-grammar` into the search box.
+followed by the `Run/Start Debugging` dropdown (or the `F5` key). To observe the extension in action, view the file `demo.in`.
 
-To test the installation, just open a handy SWMF `PARAM.in` file.
+To complete the manual installation, follow the remaining steps to manually create and install the package:
 
-Alternatively, the extension can be [built, installed and tested manually](INSTALL.md).
+## Package and install the extension
+
+4. Create a package using `vsce`
+
+    ```bash
+    vsce package
+    ```
+
+    This should generate a `ConTeXt-grammar-?.?.?.vsix` file in the current directory.
+5. Manually install the extension in VS Code (you may want to replace the wildcards in the version number)
+
+    ```bash
+    code --install-extension ConTeXt-grammar-?.?.?.vsix
+    ```
+
+To test the installation, open the current folder in VS Code
+
+```bash
+code .
+```
+
+
