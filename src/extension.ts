@@ -50,9 +50,9 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                             symbolkind_marker,
                             line.range,
                             line.range
-                            )
+                        )
                         nodes[nodes.length-1].push(marker_symbol)
-                            
+                        nodes.push(marker_symbol.children) //嵌套
                         // if (!rootTitleLevel){
                         //     rootTitleLevel = titleLevel;
                         // }
@@ -72,7 +72,6 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                         // preTitleLevel = titleLevel;
                     }
                 }
-                console.log(nodes)
             resolve(symbols);
         });
     }
