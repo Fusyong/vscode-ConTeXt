@@ -1,9 +1,10 @@
 %
-
+\definehead [mychapter] [chapter]
 
 \section{第一节}
-\subsection{第二节}
 \chapter{第一章}
+\mychapter{mychapter}
+\subsection{第二节}
 \section{第一节}
 \section{第二节}
 \chapter{第一章}

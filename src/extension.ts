@@ -27,22 +27,19 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                 const symbolkind_marker = vscode.SymbolKind.Field
                 const titleTextRegEx = /(?<=\{).*?(?=\})/
                 // 支持自定义标题 \definehead [Title] [title]
-                // const definedTitleTextRegEx = /.*\\definehead\s*\[(.+)\]\s*\[(.+)\].*/
+                const definedTitleTextRegEx = RegExp(/\\definehead\s*\[(.+?)\]\s*\[(.+?)\]/);
                 // 最大支持7级标题
-                const titles = ["part", "chapter", "section",
-                "subsection", "subsubsection",
-                "subsubsubsection", "subsubsubsubsection"]
+                const titles:{[key:string]:number} = {"part":0, "chapter":1, "section":2,
+                "subsection":3, "subsubsection":4, "subsubsubsection":5, "subsubsubsubsection":6}
                 
                 for (let i = 0; i < document.lineCount; i++) {
                     const line = document.lineAt(i);
                     const lineText = line.text;
 
-                    // let a = definedTitleTextRegEx.exec(lineText)
-
                     const titleText =  lineText.match(titleTextRegEx);
                     // const tokens = lineText.split(/[\s\\\{\}\[\]]+/)
                     const titleName = lineText.split(/[^a-zA-Z]+/)[1]
-                    const titleLevel = titles.indexOf(titleName);
+                    const titleLevel = titles[titleName];
                     function add_node(marker_symbol:vscode.DocumentSymbol,
                                     current_branch:[number, vscode.DocumentSymbol][]){
                         const lastnode =current_branch[current_branch.length-1]
@@ -58,7 +55,17 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                             current_branch.push([titleLevel, marker_symbol])
                         }
                     }
-                    
+
+                    // 增加自定义标题
+                    const catchGroup = definedTitleTextRegEx.exec(lineText)
+                    if (catchGroup && catchGroup.length !== 0) {
+                        const level = titles[catchGroup[2].trim()];
+                        const name = catchGroup[1].trim();
+                        if (level && name) {
+                            titles[name] = level
+                        }
+                    }
+
                     if (titleLevel >= 0 && titleText) {
                         const marker_symbol = new vscode.DocumentSymbol(
                             titleText[0].trim(),

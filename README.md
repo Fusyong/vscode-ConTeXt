@@ -1,8 +1,12 @@
 based on https://github.com/svaberg/SWMF-grammar/tree/master
 and https://github.com/JulianGmp/vscode-context-syntax
+ and https://github.com/pgundlach/context.tmbundle/tree/master
 
-资料 https://github.com/pgundlach/context.tmbundle/tree/master
+## TODO
 
++ [x] show outline
+    + [x] support `\define[mytitle][title]`
+        + [ ] parse the imported files and environments
 
 ## Build the extension
 
