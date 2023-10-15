@@ -22,54 +22,52 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
         token: vscode.CancellationToken): Promise<vscode.DocumentSymbol[]> {
             return new Promise((resolve, reject) => {
                 const symbols: vscode.DocumentSymbol[] = [];
-                const nodes = [symbols]
+                let current_branch:[number, vscode.DocumentSymbol][] = []
 
                 const symbolkind_marker = vscode.SymbolKind.Field
-                const symbolkind_run = vscode.SymbolKind.Event
-                const symbolkind_cmd = vscode.SymbolKind.Function
                 const titleTextRegEx = /(?<=\{).*?(?=\})/
+                // 支持自定义标题 \definehead [Title] [title]
+                // const definedTitleTextRegEx = /.*\\definehead\s*\[(.+)\]\s*\[(.+)\].*/
                 // 最大支持7级标题
                 const titles = ["part", "chapter", "section",
-                                "subsection", "subsubsection",
-                                "subsubsubsection", "subsubsubsubsection"]
-                // const titleRegEx = /^\\(part|chapter)|title|(sub)*(section|subject)/
-                let preTitleLevel = undefined
-                let rootTitleLevel = undefined
-
+                "subsection", "subsubsection",
+                "subsubsubsection", "subsubsubsubsection"]
+                
                 for (let i = 0; i < document.lineCount; i++) {
                     const line = document.lineAt(i);
                     const lineText = line.text;
-                    const titleText =  lineText.match(titleTextRegEx)
+
+                    // let a = definedTitleTextRegEx.exec(lineText)
+
+                    const titleText =  lineText.match(titleTextRegEx);
                     // const tokens = lineText.split(/[\s\\\{\}\[\]]+/)
                     const titleName = lineText.split(/[^a-zA-Z]+/)[1]
                     const titleLevel = titles.indexOf(titleName);
-                    if (titleLevel > -1 && titleText) {
+                    function add_node(marker_symbol:vscode.DocumentSymbol,
+                                    current_branch:[number, vscode.DocumentSymbol][]){
+                        const lastnode =current_branch[current_branch.length-1]
+                        let preTitleLevel = lastnode ? lastnode[0] : undefined
+                        if (preTitleLevel === undefined){
+                            symbols.push(marker_symbol)
+                            current_branch.push([titleLevel, marker_symbol])
+                        } else if (titleLevel <= preTitleLevel) {
+                            current_branch.pop()
+                            add_node(marker_symbol, current_branch)
+                        } else if(titleLevel > preTitleLevel) {
+                            lastnode[1].children.push(marker_symbol)
+                            current_branch.push([titleLevel, marker_symbol])
+                        }
+                    }
+                    
+                    if (titleLevel >= 0 && titleText) {
                         const marker_symbol = new vscode.DocumentSymbol(
-                            titleLevel.toString() + " " + titleText[0],
-                            titleName,
+                            titleText[0].trim(),
+                            titleLevel.toString(),
                             symbolkind_marker,
                             line.range,
                             line.range
                         )
-                        nodes[nodes.length-1].push(marker_symbol)
-                        nodes.push(marker_symbol.children) //嵌套
-                        // if (!rootTitleLevel){
-                        //     rootTitleLevel = titleLevel;
-                        // }
-
-                        // if (!preTitleLevel || preTitleLevel == titleLevel) {
-                        //     nodes[nodes.length-1].push(marker_symbol)
-                        // }
-                        // else if(titleLevel > preTitleLevel){
-                        //     nodes[nodes.length-1].push(marker_symbol)
-                        //     nodes.push(marker_symbol.children) //嵌套
-                        // }
-                        // else {
-                        //     nodes[nodes.length-1].push(marker_symbol)
-                        //     nodes.push(marker_symbol.children) //嵌套
-                        // }
-                        
-                        // preTitleLevel = titleLevel;
+                        add_node(marker_symbol,current_branch)
                     }
                 }
             resolve(symbols);
