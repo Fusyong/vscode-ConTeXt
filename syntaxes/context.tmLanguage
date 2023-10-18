@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <!-- Original File: https://github.com/pgundlach/context.tmbundle/blob/master/Syntaxes/ConTeXt.tmLanguage -->
+<!-- Original File: https://github.com/JulianGmp/vscode-context-syntax/blob/master/syntaxes/context.tmLanguage -->
 <dict>
 	<key>fileTypes</key>
 	<array>
