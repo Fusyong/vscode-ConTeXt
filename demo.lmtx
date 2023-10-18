@@ -1,5 +1,5 @@
 %
-\definehead [mychapter] [chapter]
+\definehead[mychapter][chapter]
 
 \section{第一节}
 \chapter{第一章}
