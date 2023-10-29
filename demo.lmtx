@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 % demo
 \definehead [mychapter] [chapter]
 \definehead [mysection] [section]
-=======
-%
-\definehead[mychapter][chapter]
->>>>>>> 699453d2851445b8fe9c5c22e3b306774d8bdecf
 
 \section{凡例}
 \chapter{第一章}
