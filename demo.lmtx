@@ -1,14 +1,15 @@
-%
+% demo
 \definehead [mychapter] [chapter]
+\definehead [mysection] [section]
 
-\section{第一节}
+\section{凡例}
 \chapter{第一章}
-\mychapter{mychapter}
-\subsection{第二节}
 \section{第一节}
-\section{第二节}
-\chapter{第一章}
+\subsection{一、……}
+\subsubsection{（一）……}
+\subsubsubsection{1. ……}
+\subsubsubsubsection{（1）……}
 
-\chapter{第二章}
-\section{第一节}
+\mychapter{第二章}
+\mysection{第一节}
 \section{第二节}

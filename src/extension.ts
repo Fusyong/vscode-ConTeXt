@@ -29,8 +29,21 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                 // 支持自定义标题 \definehead [Title] [title]
                 const definedTitleTextRegEx = RegExp(/\\definehead\s*\[(.+?)\]\s*\[(.+?)\]/);
                 // 最大支持7级标题
-                const titles:{[key:string]:number} = {"part":0, "chapter":1, "section":2,
-                "subsection":3, "subsubsection":4, "subsubsubsection":5, "subsubsubsubsection":6}
+                const titles:{[key:string]:number} = {
+                    "part":0,
+                    "chapter":1,
+                    "section":2,
+                    "subsection":3,
+                    "subsubsection":4,
+                    "subsubsubsection":5,
+                    "subsubsubsubsection":6,
+                    "title":1,
+                    "subject":2,
+                    "subsubject":3,
+                    "subsubsubject":4,
+                    "subsubsubsubject":5,
+                    "subsubsubsubsubject":6,
+                }
                 
                 for (let i = 0; i < document.lineCount; i++) {
                     const line = document.lineAt(i);
