@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.languages.registerDocumentSymbolProvider(
-            {scheme: "file", language: "ConTeXt"}, 
+            {scheme: "file", language: "ConTeXt"},
             new ConTeXtDocumentSymbolProvider()
         )
     );
@@ -25,11 +25,12 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                 const current_branch:[number, vscode.DocumentSymbol][] = []
 
                 const symbolkind_marker = vscode.SymbolKind.Field
-                // 匹配`[...]{...}{titleText}`中的 titleText
-                const titleTextRegEx = /(?<=(\[.*?\])?(\{.*?\})?\{).*?(?=\})/
-                // 匹配[...title={titleText},...]中的 titleText
-                const titleTextRegEx2 = /(?<=\[.*?[^a-zA-Z]?title=\{).*?(?=\}.*?\])/
-                
+                const titleTextRegEx = /(?<=\{).*?(?=\})/
+                // // 匹配[...title={titleText},...]中的 titleText
+                // const titleTextRegEx0 = /(?<=\[.*?[^a-zA-Z]?title=\{).*?(?=\}.*?\])/
+                // // 匹配`[...]{...}{titleText}`中的 titleText
+                // const titleTextRegEx1 = /(?<=(\[.*?\])?(\{.*?\})?\{).*?(?=\})/
+
                 function add_node(marker_symbol: vscode.DocumentSymbol,
                                 current_branch: [number, vscode.DocumentSymbol][],
                                 titleLevel: number) {
@@ -82,18 +83,20 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                         "xxxxxiaoti": 6,
                     }),
                 }
-                
+
                 // 遍历文档，生成符号
                 for (let i = 0; i < document.lineCount; i++) {
                     const line = document.lineAt(i);
                     const lineText = line.text;
 
-                    const titleText =  lineText.match(titleTextRegEx2) || lineText.match(titleTextRegEx);
+                    const titleText =  lineText.match(titleTextRegEx);
+                    // const titleText =  lineText.match(titleTextRegEx0) || lineText.match(titleTextRegEx1);
                     // const tokens = lineText.split(/[\s\\\{\}\[\]]+/)
                     const titleName = lineText.split(/[^a-zA-Z]+/)[1]
-                    // 将titleName中的前缀`start`切除
-                    const titleNameTrimedPrefix = titleName.replace(/^start/, '')
-                    const titleLevel = titles[titleNameTrimedPrefix] || titles[titleName];
+                    const titleLevel = titles[titleName];
+                    // // 将titleName中的前缀`start`切除
+                    // const titleNameTrimedPrefix = titleName.replace(/^start/, '')
+                    // const titleLevel = titles[titleName] || titles[titleNameTrimedPrefix];
 
                     // 增加自定义标题
                     const catchGroup = definedTitleTextRegEx.exec(lineText)
