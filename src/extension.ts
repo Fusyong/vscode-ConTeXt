@@ -22,10 +22,28 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
         token: vscode.CancellationToken): Promise<vscode.DocumentSymbol[]> {
             return new Promise((resolve, reject) => {
                 const symbols: vscode.DocumentSymbol[] = [];
-                let current_branch:[number, vscode.DocumentSymbol][] = []
+                const current_branch:[number, vscode.DocumentSymbol][] = []
 
                 const symbolkind_marker = vscode.SymbolKind.Field
                 const titleTextRegEx = /(?<=\{).*?(?=\})/
+                
+                function add_node(marker_symbol: vscode.DocumentSymbol,
+                                current_branch: [number, vscode.DocumentSymbol][],
+                                titleLevel: number) {
+                    const lastnode = current_branch[current_branch.length-1]
+                    const preTitleLevel = lastnode ? lastnode[0] : undefined
+                    if (preTitleLevel === undefined){
+                        symbols.push(marker_symbol)
+                        current_branch.push([titleLevel, marker_symbol])
+                    } else if (titleLevel <= preTitleLevel) {
+                        current_branch.pop()
+                        add_node(marker_symbol, current_branch, titleLevel)
+                    } else if(titleLevel > preTitleLevel) {
+                        lastnode[1].children.push(marker_symbol)
+                        current_branch.push([titleLevel, marker_symbol])
+                    }
+                }
+
                 // 支持自定义标题 \definehead [Title] [title]
                 const definedTitleTextRegEx = RegExp(/\\definehead\s*\[(.+?)\]\s*\[(.+?)\]/);
                 // 最大支持7级标题
@@ -43,6 +61,21 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                     "subsubsubject":4,
                     "subsubsubsubject":5,
                     "subsubsubsubsubject":6,
+                    // 从用户设置中获取标题名称和层级
+                    ...vscode.workspace.getConfiguration('ConTeXt').get('customTitles', {
+                        "ce": 1,
+                        "danyuan": 2,
+                        "kewen": 3,
+                        "xiaobiaoti": 4,
+                        "xiaoxiaobiaoti": 5,
+                        "xiaoxiaoxiaobiaoti": 6,
+                        "bu": 1,
+                        "zhang": 2,
+                        "jie": 3,
+                        "xiaojie": 4,
+                        "xiaoxiaojie": 5,
+                        "xiaoxiaoxiaojie": 6
+                    }),
                 }
                 
                 for (let i = 0; i < document.lineCount; i++) {
@@ -53,21 +86,6 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                     // const tokens = lineText.split(/[\s\\\{\}\[\]]+/)
                     const titleName = lineText.split(/[^a-zA-Z]+/)[1]
                     const titleLevel = titles[titleName];
-                    function add_node(marker_symbol:vscode.DocumentSymbol,
-                                    current_branch:[number, vscode.DocumentSymbol][]){
-                        const lastnode =current_branch[current_branch.length-1]
-                        let preTitleLevel = lastnode ? lastnode[0] : undefined
-                        if (preTitleLevel === undefined){
-                            symbols.push(marker_symbol)
-                            current_branch.push([titleLevel, marker_symbol])
-                        } else if (titleLevel <= preTitleLevel) {
-                            current_branch.pop()
-                            add_node(marker_symbol, current_branch)
-                        } else if(titleLevel > preTitleLevel) {
-                            lastnode[1].children.push(marker_symbol)
-                            current_branch.push([titleLevel, marker_symbol])
-                        }
-                    }
 
                     // 增加自定义标题
                     const catchGroup = definedTitleTextRegEx.exec(lineText)
@@ -87,7 +105,7 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                             line.range,
                             line.range
                         )
-                        add_node(marker_symbol,current_branch)
+                        add_node(marker_symbol, current_branch, titleLevel)
                     }
                 }
             resolve(symbols);

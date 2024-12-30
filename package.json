@@ -2,7 +2,7 @@
   "name": "context-grammar",
   "displayName": "ConTeXt Syntax",
   "description": "Syntax highlights and outline view for ConTeXt files.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "Fusyong",
   "repository": {
     "type": "git",
@@ -43,7 +43,35 @@
         "scopeName": "text.tex.context",
         "path": "./syntaxes/context.tmLanguage"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "ConTeXt Grammar",
+      "properties": {
+        "context-grammar.customTitles": {
+          "type": "object",
+          "default": {
+            "ce": 1,
+            "danyuan": 2,
+            "kewen": 3,
+            "xiaobiaoti": 4,
+            "xiaoxiaobiaoti": 5,
+            "xiaoxiaoxiaobiaoti": 6,
+            "bu": 1,
+            "zhang": 2,
+            "jie": 3,
+            "xiaojie": 4,
+            "xiaoxiaojie": 5,
+            "xiaoxiaoxiaojie": 6
+          },
+          "description": "自定义 ConTeXt 各级级别（1-6），部为1，章为2，以此类推。",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 6
+          }
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
