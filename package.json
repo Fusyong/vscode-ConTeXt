@@ -63,10 +63,10 @@
             "xiaoxiaojie": 5,
             "xiaoxiaoxiaojie": 6
           },
-          "description": "自定义 ConTeXt 各级级别（1-6），部为1，章为2，以此类推。",
+          "description": "自定义 ConTeXt 各级级别（0-6），如：部、章、节、小结……",
           "additionalProperties": {
             "type": "number",
-            "minimum": 1,
+            "minimum": 0,
             "maximum": 6
           }
         }

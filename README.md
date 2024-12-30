@@ -10,6 +10,8 @@ and https://github.com/pgundlach/context.tmbundle/tree/master
 + [x] show outline
     + [x] support `\define[mytitle][title]`
         + [ ] parse the imported files and environments
+    + [x] 支持在设置中设置outline的各级标题
+    + [ ] support `\startmytitle`
 
 ## Build the extension
 
