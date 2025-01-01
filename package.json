@@ -50,18 +50,20 @@
         "context-grammar.customTitles": {
           "type": "object",
           "default": {
-            "ce": 1,
-            "danyuan": 2,
-            "kewen": 3,
-            "xiaobiaoti": 4,
-            "xiaoxiaobiaoti": 5,
-            "xiaoxiaoxiaobiaoti": 6,
-            "bu": 1,
-            "zhang": 2,
-            "jie": 3,
-            "xiaojie": 4,
-            "xiaoxiaojie": 5,
-            "xiaoxiaoxiaojie": 6
+            "bu": 0,
+            "zhang": 1,
+            "jie": 2,
+            "xiaojie": 3,
+            "xxiaojie": 4,
+            "xxxiaojie": 5,
+            "xxxxxiaojie": 6,
+            "ce": 0 ,
+            "danyuan": 1,
+            "kewen": 2,
+            "xiaoti": 3,
+            "xxiaoti": 4,
+            "xxxiaoti": 5,
+            "xxxxxiaoti": 6
           },
           "description": "自定义 ConTeXt 各级级别（0-6），如：部、章、节、小结……",
           "additionalProperties": {
@@ -71,6 +73,32 @@
           }
         }
       }
+    },
+    "commands": [
+      {
+        "command": "context.revealSymbolInEditor",
+        "title": "Reveal Symbol in Editor"
+      },
+      {
+        "command": "context.selectSymbolInEditor",
+        "title": "Select Symbol in Editor"
+      },
+      {
+        "command": "context.selectSymbolWithContent",
+        "title": "Select Symbol with Content"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "context.selectSymbolInEditor",
+          "group": "navigation"
+        },
+        {
+          "command": "context.selectSymbolWithContent",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": {
