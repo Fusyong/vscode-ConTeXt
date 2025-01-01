@@ -2,7 +2,6 @@ out
 node_modules
 .vscode-test/
 *.vsix
-*.code-workspace
 *.pdf
 *.log
 *.tuc

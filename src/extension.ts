@@ -25,11 +25,8 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                 const current_branch:[number, vscode.DocumentSymbol][] = []
 
                 const symbolkind_marker = vscode.SymbolKind.Field
-                const titleTextRegEx = /(?<=\{).*?(?=\})/
-                // // 匹配[...title={titleText},...]中的 titleText
-                // const titleTextRegEx0 = /(?<=\[.*?[^a-zA-Z]?title=\{).*?(?=\}.*?\])/
-                // // 匹配`[...]{...}{titleText}`中的 titleText
-                // const titleTextRegEx1 = /(?<=(\[.*?\])?(\{.*?\})?\{).*?(?=\})/
+                // TODO
+                const titleTextRegEx = /(?:\[.*?\])?(?:\{.*?\})?(?:title=)?\{(.*?)\}/;
 
                 function add_node(marker_symbol: vscode.DocumentSymbol,
                                 current_branch: [number, vscode.DocumentSymbol][],
@@ -48,10 +45,9 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                     }
                 }
 
-                // 支持自定义标题 \definehead [Title] [title]
-                const definedTitleTextRegEx = RegExp(/\\definehead\s*\[(.+?)\]\s*\[(.+?)\]/);
                 // 最大支持7级标题
                 const titles:{[key:string]:number} = {
+                    // 系统
                     "part":0,
                     "chapter":1,
                     "section":2,
@@ -89,34 +85,37 @@ class ConTeXtDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
                     const line = document.lineAt(i);
                     const lineText = line.text;
 
-                    const titleText =  lineText.match(titleTextRegEx);
+                    const titleTextMatch =  lineText.match(titleTextRegEx);
                     // const titleText =  lineText.match(titleTextRegEx0) || lineText.match(titleTextRegEx1);
                     // const tokens = lineText.split(/[\s\\\{\}\[\]]+/)
-                    const titleName = lineText.split(/[^a-zA-Z]+/)[1]
-                    const titleLevel = titles[titleName];
+                    const titleNameMatch = lineText.match(/(?<=\\)(?:start)?([a-zA-Z]+)/)
                     // // 将titleName中的前缀`start`切除
                     // const titleNameTrimedPrefix = titleName.replace(/^start/, '')
                     // const titleLevel = titles[titleName] || titles[titleNameTrimedPrefix];
 
-                    // 增加自定义标题
-                    const catchGroup = definedTitleTextRegEx.exec(lineText)
-                    if (catchGroup && catchGroup.length !== 0) {
-                        const level = titles[catchGroup[2].trim()];
-                        const name = catchGroup[1].trim();
-                        if (level && name) {
-                            titles[name] = level
-                        }
-                    }
+                    // // 增加自定义标题
+                    // const catchGroup = definedTitleTextRegEx.exec(lineText)
+                    // if (catchGroup && catchGroup.length !== 0) {
+                        //     const level = titles[catchGroup[2].trim()];
+                        //     const name = catchGroup[1].trim();
+                        //     if (level && name) {
+                            //         titles[name] = level
+                            //     }
+                            // }
 
-                    if (titleLevel >= 0 && titleText) {
-                        const marker_symbol = new vscode.DocumentSymbol(
-                            titleText[0].trim(),
-                            titleLevel.toString(),
-                            symbolkind_marker,
-                            line.range,
-                            line.range
-                        )
-                        add_node(marker_symbol, current_branch, titleLevel)
+                    if (titleNameMatch) {
+                        const titleName = titleNameMatch[1];
+                        const titleLevel = titles[titleName];
+                        if (titleLevel >= 0 && titleTextMatch) {
+                            const marker_symbol = new vscode.DocumentSymbol(
+                                titleTextMatch[1].replace("title={","").trim(),
+                                titleLevel.toString(),
+                                symbolkind_marker,
+                                line.range,
+                                line.range
+                            )
+                            add_node(marker_symbol, current_branch, titleLevel)
+                        }
                     }
                 }
             resolve(symbols);
