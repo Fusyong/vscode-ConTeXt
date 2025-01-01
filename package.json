@@ -73,32 +73,6 @@
           }
         }
       }
-    },
-    "commands": [
-      {
-        "command": "context.revealSymbolInEditor",
-        "title": "Reveal Symbol in Editor"
-      },
-      {
-        "command": "context.selectSymbolInEditor",
-        "title": "Select Symbol in Editor"
-      },
-      {
-        "command": "context.selectSymbolWithContent",
-        "title": "Select Symbol with Content"
-      }
-    ],
-    "menus": {
-      "editor/context": [
-        {
-          "command": "context.selectSymbolInEditor",
-          "group": "navigation"
-        },
-        {
-          "command": "context.selectSymbolWithContent",
-          "group": "navigation"
-        }
-      ]
     }
   },
   "scripts": {
