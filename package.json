@@ -1,9 +1,9 @@
 {
-  "name": "context-grammar",
-  "displayName": "ConTeXt Syntax",
+  "name": "context-syntax-plus",
+  "displayName": "ConTeXt Syntax plus",
   "description": "Syntax highlights and outline view for ConTeXt files.",
   "version": "0.0.2",
-  "publisher": "Fusyong",
+  "publisher": "HuangFusyong",
   "repository": {
     "type": "git",
     "url": "https://github.com/Fusyong/vscode-ConTeXt.git"
@@ -19,7 +19,7 @@
   "activationEvents": [
     "onLanguage:context-grammar"
   ],
-  "icon": "images/icon.png",
+  "icon": "icon.jpg",
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
