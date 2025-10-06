@@ -1,9 +1,10 @@
 
-a VSCode extension for syntax highlighting and outline for ConTeXt documents
+a VSCode extension for syntax highlighting and outline generating for ConTeXt documents
 
-based on https://github.com/JulianGmp/vscode-context-syntax
-and https://github.com/svaberg/SWMF-grammar/tree/master 
-and https://github.com/pgundlach/context.tmbundle/tree/master
+based on 
+
+* [context.tmbundle](https://github.com/pgundlach/context.tmbundle)
+* [vscode-context-syntax](https://github.com/JulianGmp/vscode-context-syntax)
 
 ## TODO
 
