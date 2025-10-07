@@ -1,15 +1,34 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
 
-suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+suite('ConTeXt Extension Test Suite', () => {
+	test('Extension should be activated', async () => {
+		const extension = vscode.extensions.getExtension('HuangFusyong.context-syntax-plus');
+		assert.ok(extension);
+		
+		await extension.activate();
+		assert.ok(extension.isActive);
+	});
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+	test('Document symbol provider should be registered', async () => {
+		const extension = vscode.extensions.getExtension('HuangFusyong.context-syntax-plus');
+		assert.ok(extension);
+		
+		await extension.activate();
+		
+		// 创建一个测试文档
+		const testDoc = await vscode.workspace.openTextDocument({
+			content: '\\chapter{Test Chapter}\n\\section{Test Section}',
+			language: 'ConTeXt'
+		});
+		
+		// 获取文档符号
+		const symbols = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
+			'vscode.executeDocumentSymbolProvider',
+			testDoc.uri
+		);
+		
+		assert.ok(symbols);
+		assert.ok(symbols.length > 0);
 	});
 });
